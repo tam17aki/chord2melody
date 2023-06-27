@@ -55,7 +55,6 @@ model:
     n_layers: 1  # LSTM の層数
     n_fc_layers: 1  # LSTMの出力から潜在ベクトルを得る全結合層の数
     bidirectional: False  # Trueは双方向LSTM, Falseは単方向LSTM
-    use_embed: False  # one-hotの埋め込みにnn.Embeddingを使うか否か (True:使う)
   decoder:  # Decoder LSTM
     latent_dim: 32  # VAEの潜在ベクトルの次元
     condition_dim: 13  # 12 + mode 1次元
@@ -63,7 +62,7 @@ model:
     hidden_dim: 1024  # LSTMの隠れベクトルの次元
     n_layers: 1  # number of LSTM layers
     n_fc_layers: 1  # number of full-connect layers
-    bidirectional: False
+    bidirectional: False  # Trueは双方向LSTM, Falseは単方向LSTM
 
 training:
   n_epoch: 3000
