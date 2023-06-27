@@ -204,7 +204,7 @@ class PianoRoll:
 
 
 def main(cfg):
-    """Perform ad-lib melody synthesis."""
+    """Perform ad-lib melody generation."""
 
     # setup network and load checkpoint
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
