@@ -2,7 +2,7 @@
 ## 概要
 本リポジトリは「AIミュージックバトル！『弁財天』」から提供されたスターターキット ver 1.0 の改良版を提供する．改良版はディレクトリごとに分けている．
 
-- cvae/ : 生成モデルを条件付き変分オートエンコーダ (Condtional Variational AutoEncoder; CVAE) へと拡張した．エンコーダ・デコーダはLSTMのままである．実装はRui Konuma氏の[実装](https://github.com/konumaru/benzaiten/tree/main)を参考にした．
+- cvae/ : 生成モデルを条件付き変分オートエンコーダ (Condtional Variational AutoEncoder; CVAE) へと拡張した．実装はRui Konuma氏の[実装](https://github.com/konumaru/benzaiten/tree/main)を参考にした． エンコーダ・デコーダはLSTMのままであるが，それらへの条件付けはコード（chord）と調（key）の情報により与えた．
 
 ## ライセンス
 MIT licence.
