@@ -58,7 +58,7 @@ def setup_modules(cfg: DictConfig, device: torch.device):
     return modules
 
 
-def training_loop(cfg: DictConfig, modules, device: torch.device):
+def training_loop(cfg: DictConfig, modules):
     """Perform training loop."""
     dataloader, model, loss_func, optimizer, lr_scheduler = modules
     model.train()  # turn on train mode
@@ -98,7 +98,7 @@ def main(cfg: DictConfig):
     modules = setup_modules(cfg, device)
 
     # perform training loop
-    training_loop(cfg, modules, device)
+    training_loop(cfg, modules)
 
     # save checkpoint
     save_checkpoint(cfg, modules)
