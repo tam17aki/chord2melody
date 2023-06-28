@@ -68,11 +68,12 @@ class PianoRoll:
                     chord_prog[measure_id * 4 + beat_id] = music21.harmony.ChordSymbol(
                         root=row[2], kind=row[3], bass=row[4]
                     )
+
+        chord = None
         for i, _chord in enumerate(chord_prog):
-            if _chord is not None:
-                chord = _chord
-            else:
-                chord_prog[i] = chord
+            chord = _chord if _chord is not None else chord
+            chord_prog[i] = chord
+
         return chord_prog
 
     def _chord_to_chroma(self, chord_prog):
