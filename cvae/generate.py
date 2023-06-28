@@ -121,9 +121,9 @@ class PianoRoll:
         piano_roll = np.zeros((melody_length, max_note_num - min_note_num + 1))
         for i in range(0, melody_length, batch_size):
             latent_rand = torch.randn(1, self.cfg.model.decoder.latent_dim).to(device)
-            y_new = model.decode(latent_rand, condition[:, i : i + batch_size])
-            y_new = y_new.softmax(dim=2).cpu().detach().numpy()
-            piano_roll[i : i + batch_size, :] = y_new[0]
+            melody = model.decode(latent_rand, condition[:, i : i + batch_size])
+            melody = melody.softmax(dim=2).cpu().detach().numpy()
+            piano_roll[i : i + batch_size, :] = melody[0]
         self.piano_roll = piano_roll
 
     def _convert_notenum(self):
