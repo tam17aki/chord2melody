@@ -73,7 +73,6 @@ class PianoRoll:
         for i, _chord in enumerate(chord_prog):
             chord = _chord if _chord is not None else chord
             chord_prog[i] = chord
-
         return chord_prog
 
     def _chord_to_chroma(self, chord_prog):
