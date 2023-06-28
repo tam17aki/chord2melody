@@ -66,7 +66,6 @@ class MusicXMLFeature:
 
     def _get_score(self, xml_file: str, root: str):
         """Get an object of Score class (music21)."""
-
         # MusicXMLをパースしてScoreクラスのオブジェクトを取得する
         score = music21.converter.parse(xml_file, format="musicxml")
 
