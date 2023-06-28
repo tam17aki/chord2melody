@@ -65,7 +65,7 @@ model:
     bidirectional: False  # Trueは双方向LSTM, Falseは単方向LSTM
 
 training:
-  n_epoch: 3000
+  n_epoch: 2500
   n_batch: 32
   optim:
     optimizer:  # 最適化アルゴリズム
@@ -81,6 +81,7 @@ training:
         milestones:
           - 1000
           - 1500
+          - 2000
         gamma: 0.6
   kl_weight: 0.001  # VAEにおけるKL項（正規化項）にかける重み
   use_grad_clip: False  # 勾配クリッピングを使うか否か
@@ -89,6 +90,8 @@ training:
   model_file: "lstm_vae.pt"  # 訓練直後のモデルファイル名
 
 demo:  # デモンストレーション用
+  unit_measures: 16 # 1回の生成で扱う旋律の長さ
+  key_mode: "major"  # 生成するメロディの調のモード（"major" or "minor"）
   backing_fid: "1arGB0M7Z_iTf4vi4yE5vkaIyR5vdWhkt"  # 伴奏データのFile ID
   chord_fid: "1Ksv-EuWQfyJ7kOWzQUQhiv2dzf-mdX45"  # コード進行データのFile ID
   chkpt_dir: "model/"  # 訓練済みモデルファイルの置き場所
