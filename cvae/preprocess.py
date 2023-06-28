@@ -111,8 +111,8 @@ class MusicXMLFeature:
             m_notes = [None] * num_beats * num_parts_of_beat
             for note in measure.getElementsByClass("Note"):  # 1小節内の音符たち
                 # noteは鍵盤位置に対応するもの (music21.note.Note) -> CとかGとか
-                onset = note._activeSiteStoredOffset  # 小節内の鳴り始め位置（浮動小数点）
-                offset = onset + note._duration.quarterLength  # 鳴り終わり位置（浮動小数点）
+                onset = note.offset  # 小節内の鳴り始め位置（浮動小数点）
+                offset = onset + note.duration.quarterLength  # 鳴り終わり位置（浮動小数点）
                 start_idx = int(onset * num_parts_of_beat)  # 4倍して時間解像度を調整
                 end_idx = int(offset * num_parts_of_beat) + 1  # 4倍して時間解像度を調整
                 end_idx = end_idx if end_idx < 16 else 16  # 小節内に収まるように調整
@@ -153,7 +153,7 @@ class MusicXMLFeature:
         onehot_chord_seq = np.zeros((len(self.chords), 12))
         for i, chord in enumerate(self.chords):
             if chord is not None:  # 小節内の当該位置におけるコード記号
-                for note in chord._notes:  # ピッチクラスに分解（ドミソならC, E, G）
+                for note in chord.notes:  # ピッチクラスに分解（ドミソならC, E, G）
                     onehot_chord_seq[i, note.pitch.midi % 12] = 1
         return onehot_chord_seq
 
