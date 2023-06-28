@@ -92,7 +92,7 @@ class PianoRoll:
         chroma = np.zeros((len(seq_chord), 12))  # [128, 128]
         for i, chord in enumerate(seq_chord):
             if chord is not None:
-                for note in chord._notes:
+                for note in chord.notes:
                     chroma[i, note.pitch.midi % 12] = 1
         return chroma
 
@@ -205,7 +205,6 @@ class PianoRoll:
 
 def main(cfg):
     """Perform ad-lib melody generation."""
-
     # setup network and load checkpoint
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     chkpt_dir = os.path.join(cfg.benzaiten.root_dir, cfg.demo.chkpt_dir)
