@@ -108,18 +108,20 @@ class PianoRoll:
         var["progress"] = self._make_chord_prog()
         var["chord_chroma"] = self._chord_to_chroma(var["progress"])
         var["mode"] = np.zeros((var["chord_chroma"].shape[0], 1))  # major
-        if self.cfg.feature.key_mode == "minor":
+        if self.cfg.demo.key_mode == "minor":
             var["mode"] = np.ones((var["chord_chroma"].shape[0], 1))  # minor
         condition = np.concatenate((var["chord_chroma"], var["mode"]), axis=1)
-        inputs = torch.from_numpy(condition.astype(np.float32)).unsqueeze(0).to(device)
-        melody_length = inputs.shape[1]  # 128
-        batch_size = self.cfg.feature.unit_measures
+        condition = (
+            torch.from_numpy(condition.astype(np.float32)).unsqueeze(0).to(device)
+        )
+        melody_length = condition.shape[1]  # 128
+        batch_size = self.cfg.demo.unit_measures
         min_note_num = self.cfg.feature.notenum_from
         max_note_num = self.cfg.feature.notenum_thru
         piano_roll = np.zeros((melody_length, max_note_num - min_note_num + 1))
         for i in range(0, melody_length, batch_size):
             latent_rand = torch.randn(1, self.cfg.model.decoder.latent_dim).to(device)
-            y_new = model.decode(latent_rand, inputs[:, i : i + batch_size])
+            y_new = model.decode(latent_rand, condition[:, i : i + batch_size])
             y_new = y_new.softmax(dim=2).cpu().detach().numpy()
             piano_roll[i : i + batch_size, :] = y_new[0]
 
