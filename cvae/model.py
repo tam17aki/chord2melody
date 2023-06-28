@@ -67,6 +67,10 @@ class Encoder(nn.Module):
         Args:
             melody (Tensor) : sequence of note numbers
             condition (Tensor) : sequence of chord vectors
+
+        Returns:
+            mean (Tensor) : estimated mean vector of VAE
+            logvar (Tensor) : estimated log variance vector (diag. cov.) of VAE
         """
         embedded = self.embedding(melody)
         source = torch.cat([embedded, condition], axis=-1)
@@ -171,7 +175,7 @@ class MelodyComposer(nn.Module):
         Returns:
             reconst (Tensor) : reconstructed inputs (melody)
             mean (Tensor) : mean vector of VAE
-            logvar (Tensor) : log variance vector an vec (diag. cov.)tor of VAE
+            logvar (Tensor) : log variance vector (diag. cov.)  of VAE
         """
         _, mean, logvar = self.encode(inputs, condition)
         latent = self.reparameterization(mean, logvar)
