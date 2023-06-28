@@ -124,7 +124,6 @@ class PianoRoll:
             y_new = model.decode(latent_rand, condition[:, i : i + batch_size])
             y_new = y_new.softmax(dim=2).cpu().detach().numpy()
             piano_roll[i : i + batch_size, :] = y_new[0]
-
         self.piano_roll = piano_roll
 
     def _convert_notenum(self):
