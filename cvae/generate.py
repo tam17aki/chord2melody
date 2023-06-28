@@ -203,17 +203,21 @@ class PianoRoll:
         return midi
 
 
-def main(cfg):
-    """Perform ad-lib melody generation."""
-    # setup network and load checkpoint
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+def load_checkpoint(cfg, device):
+    """Load checkpoint."""
     chkpt_dir = os.path.join(cfg.benzaiten.root_dir, cfg.demo.chkpt_dir)
     checkpoint = os.path.join(chkpt_dir, cfg.demo.chkpt_file)
     model = MelodyComposer(cfg.model, device).to(device)
     model.load_state_dict(torch.load(checkpoint))
     model.eval()  # turn on eval mode
+    return model
 
-    # generate ad-lib melody and export the result to midi format
+
+def generate_melody(cfg, model, device):
+    """Generate ad-lib melody from pretrained model.
+
+    The result are exported to midi format.
+    """
     piano_roll = PianoRoll(cfg)
     piano_roll.generate(model, device)
     midi = piano_roll.export_midi()
@@ -222,12 +226,31 @@ def main(cfg):
     )
     midi.save(midi_file)
 
-    # export midi to wav
+
+def midi2wav(cfg):
+    """Export Midi to Wav file."""
+    midi_file = os.path.join(
+        cfg.benzaiten.root_dir, cfg.benzaiten.adlib_dir, cfg.demo.midi_file
+    )
     wav_file = os.path.join(
         cfg.benzaiten.root_dir, cfg.benzaiten.adlib_dir, cfg.demo.wav_file
     )
     fluid_synth = midi2audio.FluidSynth(sound_font=cfg.demo.sound_font)
     fluid_synth.midi_to_audio(midi_file, wav_file)
+
+
+def main(cfg):
+    """Perform ad-lib melody generation."""
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # setup network and load checkpoint
+    model = load_checkpoint(cfg, device)
+
+    # generate ad-lib melody and save the result to midi format
+    generate_melody(cfg, model, device)
+
+    # export midi to wav
+    midi2wav(cfg)
 
 
 if __name__ == "__main__":
